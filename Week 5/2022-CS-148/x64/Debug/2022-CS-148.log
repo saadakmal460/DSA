@@ -1,0 +1,4 @@
+﻿  2022-CS-148.cpp
+D:\3rd Semester\DSA\Week 5\2022-CS-148\2022-CS-148.cpp(35,21): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+D:\3rd Semester\DSA\Week 5\2022-CS-148\2022-CS-148.cpp(44,22): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+  2022-CS-148.vcxproj -> D:\3rd Semester\DSA\Week 5\2022-CS-148\x64\Debug\2022-CS-148.exe
