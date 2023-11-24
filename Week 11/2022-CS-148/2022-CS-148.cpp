@@ -70,6 +70,79 @@ void BubbleSort(vector<T>& v)
     }
 }
 
+//Task 5
+template<class T>
+int FindMinRange(vector<T>& v, int si, int ei)
+{
+    int mi = si;
+    for (int i = si + 1; i <= ei; i++)
+    {
+        if (v[mi] > v[i])
+        {
+            mi = i;
+        }
+    }
+
+    return mi;
+
+}
+
+template<class T>
+void SelectionSort(vector<T>& v)
+{
+    for (int i = 0; i < v.size() - 1; i++)
+    {
+        int mi = FindMinRange(v, i, v.size() - 1);
+        swap(v[i], v[mi]);
+    }
+}
+
+//Task 6A
+template<class T>
+int Partition(vector<T>& v, int left, int right, int pi)
+{
+    int pivot = v[pi];
+    int i = left - 1;
+    int j = left;
+
+    swap(v[pi], v[right]);
+    pi = right;
+
+    while (j < pi)
+    {
+        if (v[j] <= pivot)
+        {
+            i++;
+            swap(v[i], v[j]);
+        }
+        j++;
+    }
+
+    swap(v[i + 1], v[pi]);
+    return i + 1;
+}
+
+template<class T>
+void QuickSortRec(vector<T>& v, int si, int ei)
+{
+    if (si < ei)
+    {
+        int pi = si + rand() % (ei - si + 1);
+        pi = Partition(v, si, ei, pi);
+        QuickSortRec(v, si, pi - 1);
+        QuickSortRec(v, pi + 1, ei);
+    }
+}
+
+template<class T>
+void QuickSort(vector<T>& v)
+{
+    QuickSortRec(v, 0, v.size() - 1);
+}
+
+
+
+
 
 
 
@@ -80,7 +153,7 @@ int main() {
     cout << "Before sorting: " << endl;
     Print(v);
 
-    HeapSort(v);
+    QuickSort(v);
 
     cout << "After sorting: " << endl;
     Print(v);
