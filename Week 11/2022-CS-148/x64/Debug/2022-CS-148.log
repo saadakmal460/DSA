@@ -1,4 +1,2 @@
 ﻿  2022-CS-148.cpp
-D:\3rd Semester\DSA\Week 11\2022-CS-148\2022-CS-148.cpp(140,33): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\3rd Semester\DSA\Week 11\2022-CS-148\2022-CS-148.cpp(156,5): message : see reference to function template instantiation 'void QuickSort<int>(std::vector<int,std::allocator<int>> &)' being compiled
   2022-CS-148.vcxproj -> D:\3rd Semester\DSA\Week 11\2022-CS-148\x64\Debug\2022-CS-148.exe

@@ -2,6 +2,7 @@
 #include <queue>
 #include <vector>
 #include <cstdlib>
+#include<fstream>
 #include <random>
 
 using namespace std;
@@ -17,7 +18,7 @@ public:
 // Task 2
 template<class T>
 void HeapSort(vector<T>& v) {
-    priority_queue<T, vector<T>, Compare<T>> pq;
+    priority_queue<T , vector<T> , Compare<T>> pq;
 
     for (int i = 0; i < v.size(); i++) {
         pq.push(v[i]);
@@ -144,19 +145,55 @@ void QuickSort(vector<T>& v)
 
 
 
+void createRandomFile(string fileName, int size)
+{
+    ofstream file(fileName);
+    for (int i = 0; i < size * 1024 * 1024; i++)
+    {
+        file << rand() % 10 << " ";
+    }
+
+}
+
+void LoadData(string fileName , vector<int>&v)
+{
+    ifstream file(fileName);
+    int value;
+
+    while (file >> value)
+    {
+        v.push_back(value);
+    }
+
+    file.close();
+}
+
+
 
 
 int main() {
-    vector<int> v(25);
+    vector<int> v(20);
+
     RandomizedInt(v);
-
-    cout << "Before sorting: " << endl;
+    HeapSort(v);
     Print(v);
 
-    QuickSort(v);
 
-    cout << "After sorting: " << endl;
-    Print(v);
 
-    return 0;
+
+
+    
+    /*createRandomFile("dsa.txt", 1);
+
+    LoadData("dsa.txt", v);
+
+    cout << "Time Before sorting: " << time(0) << endl;
+    
+    BubbleSort(v);
+
+
+    cout << "Time After sorting: " << time(0) << endl;*/
+
+
+    
 }
