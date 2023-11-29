@@ -4,37 +4,44 @@
 #include <cstdlib>
 #include<fstream>
 #include <random>
+#include<ctime>
 
 using namespace std;
 
-template<class T>
 class Compare {
 public:
-    bool operator() (const int& a, const int& b) const {
-        return a >= b;
+    bool operator() (int& a,int& b) 
+    {
+        return a > b;
     }
 };
 
 // Task 2
 template<class T>
-void HeapSort(vector<T>& v) {
-    priority_queue<T , vector<T> , Compare<T>> pq;
+void HeapSort(vector<T>& V)
+{
+    priority_queue<T, vector<T>, Compare> PQ;
 
-    for (int i = 0; i < v.size(); i++) {
-        pq.push(v[i]);
+    for (int i = 0; i < V.size(); i++)
+    {
+        PQ.push(V[i]);
     }
-    v.clear();
 
-    while (!pq.empty()) {
-        v.push_back(pq.top());
-        pq.pop();
+    V.clear();
+
+    while (!PQ.empty())
+    {
+        V.push_back(PQ.top());
+        PQ.pop();
     }
 }
 
 // Task 3
-void RandomizedInt(vector<int>& v) {
-    for (int i = 0; i < v.size(); i++) {
-        v[i] = rand() % 100;
+void Randomized_Init(vector<int>& V)
+{
+    for (int i = 0; i < V.size(); i++)
+    {
+        V[i] = rand() % 100;
     }
 }
 
@@ -98,47 +105,33 @@ void SelectionSort(vector<T>& v)
     }
 }
 
-//Task 6A
-template<class T>
-int Partition(vector<T>& v, int left, int right, int pi)
+//Task 6
+//Geeks For Geeks
+
+int partition(vector<int>& arr, int l, int h)
 {
-    int pivot = v[pi];
-    int i = left - 1;
-    int j = left;
+    int x = arr[h];
+    int i = (l - 1);
 
-    swap(v[pi], v[right]);
-    pi = right;
-
-    while (j < pi)
-    {
-        if (v[j] <= pivot)
-        {
+    for (int j = l; j <= h - 1; j++) {
+        if (arr[j] <= x) {
             i++;
-            swap(v[i], v[j]);
+            swap(arr[i], arr[j]);
         }
-        j++;
     }
-
-    swap(v[i + 1], v[pi]);
-    return i + 1;
+    swap(arr[i + 1], arr[h]);
+    return (i + 1);
 }
 
-template<class T>
-void QuickSortRec(vector<T>& v, int si, int ei)
-{
-    if (si < ei)
-    {
-        int pi = si + rand() % (ei - si + 1);
-        pi = Partition(v, si, ei, pi);
-        QuickSortRec(v, si, pi - 1);
-        QuickSortRec(v, pi + 1, ei);
-    }
-}
 
-template<class T>
-void QuickSort(vector<T>& v)
+void quickSort(vector<int>& arr, int l, int h)
 {
-    QuickSortRec(v, 0, v.size() - 1);
+    if (l < h) {
+        
+        int p = partition(arr, l, h);
+        quickSort(arr, l, p - 1);
+        quickSort(arr, p + 1, h);
+    }
 }
 
 
@@ -148,7 +141,7 @@ void QuickSort(vector<T>& v)
 void createRandomFile(string fileName, int size)
 {
     ofstream file(fileName);
-    for (int i = 0; i < size * 1024 * 1024; i++)
+    for (int i = 0; i < size * 1024; i++)
     {
         file << rand() % 10 << " ";
     }
@@ -172,27 +165,21 @@ void LoadData(string fileName , vector<int>&v)
 
 
 int main() {
-    vector<int> v(20);
+    vector<int> v;
 
-    RandomizedInt(v);
-    HeapSort(v);
-    Print(v);
-
-
-
-
-
-    
-    /*createRandomFile("dsa.txt", 1);
+   
+    //createRandomFile("dsa.txt", 500);
 
     LoadData("dsa.txt", v);
 
+   
+
     cout << "Time Before sorting: " << time(0) << endl;
     
-    BubbleSort(v);
+    quickSort(v , 0 , v.size()-1);
 
 
-    cout << "Time After sorting: " << time(0) << endl;*/
+    cout << "Time After sorting: " << time(0) << endl;
 
 
     
