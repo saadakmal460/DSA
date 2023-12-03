@@ -61,6 +61,7 @@ public:
     // Part 5
     Node *Insert(Node *root, int val)
     {
+        //Simple BST insertion
         if (root == nullptr)
         {
             return new Node(val);
@@ -68,17 +69,20 @@ public:
 
         if (val < root->val)
         {
-            root->left = Insert(root->left, val); // Fix: Added assignment to left child
+            root->left = Insert(root->left, val); 
         }
         else if (val > root->val)
         {
-            root->right = Insert(root->right, val); // Fix: Added assignment to right child
+            root->right = Insert(root->right, val); 
         }
 
+        //Updating height
         root->height = 1 + max(Height(root->left), Height(root->right));
 
         int balance = HeightDifference(root);
 
+
+        //Maintaining balance
         if (balance > 1 && val < root->left->val)
         {
             return RotateRight(root);
@@ -102,6 +106,138 @@ public:
         }
 
         return root;
+    }
+
+    // Part 6
+    Node *DeleteNode(Node* root, int val)
+    {
+
+        //Simple BST deletion
+        if (root == nullptr)
+        {
+            return root;
+        }
+
+        if (val < root->val)
+        {
+            root->left = DeleteNode(root->left, val);
+        }
+
+        else if (val > root->val)
+        {
+            root->right = DeleteNode(root->right, val);
+        }
+
+        else
+        {
+            //Node with one child or no child
+            if (root->left == nullptr || root->right == nullptr)
+            {
+                Node *temp;
+                if (root->left != nullptr)
+                {
+                    temp = root->left;
+                }
+                else
+                {
+                    temp = root->right;
+                }
+
+                if (temp == nullptr) // No child
+                {
+                    temp = root;
+                    root = nullptr;
+                }
+                else //if one child
+                {
+                    root = temp;
+                    temp = nullptr;
+                }
+            }
+
+            else
+            {
+                //Node with two childern
+                Node *temp = minNode(root->right);
+                root->val = temp->val;
+                root->right = DeleteNode(root->right, temp->val);
+            }
+        }
+
+        if (root == nullptr)
+        {
+            return root;
+        }
+
+        root->height = 1 + max(Height(root->left), Height(root->right));
+
+        int balance = HeightDifference(root);
+        
+        //Left-Left case
+        if (balance > 1 && HeightDifference(root->left) >= 0) 
+        {
+            return RotateRight(root); 
+        }
+
+        //Left Right case
+        if (balance > 1 && HeightDifference(root->left) < 0)
+        {
+            root->left = RotateLeft(root->left);
+            return RotateRight(root);
+        }
+
+        // Right Right Case
+        if (balance < -1 &&HeightDifference(root->right) <= 0)
+        {
+            return RotateLeft(root);
+        }
+        // Right Left Case
+        if (balance < -1 && HeightDifference(root->right) > 0)
+        {
+            root->right = RotateRight(root->right);
+            return RotateLeft(root);
+        }
+
+        return root;
+    }
+
+    //Leetcode Problem 2
+    bool isBalanced(TreeNode* root) 
+    {
+        if (root == nullptr)
+        {
+            return true;
+        }
+        int balance = HeightDifference(root);
+        if (balance > 1 || balance < -1)
+        {
+            return false;
+        }
+        if (!isBalanced(root->left) || !isBalanced(root->right))
+        {
+            return false;
+        }
+        return true;
+
+    }
+
+    int HeightDifference(TreeNode* n)
+    {
+        if (n == nullptr)
+        {
+            return 0;
+        }
+
+        return Height(n->left) - Height(n->right);
+    }
+
+    int Height(TreeNode* root)
+    {
+        if (!root)
+        {
+            return 0;
+        }
+        return 1 + max(Height(root->left), Height(root->right));
     }
 
     Node *RotateRight(Node *b)
@@ -130,6 +266,17 @@ public:
         b->height = 1 + max(Height(b->left), Height(b->right));
 
         return b;
+    }
+
+    Node *minNode(Node *root)
+    {
+        Node *curr = root;
+        while (curr->left)
+        {
+            curr = curr->left;
+        }
+
+        return curr;
     }
 
     void PrintTreeByRow(Node *root)
@@ -171,20 +318,27 @@ public:
 
 int main()
 {
-    AVL<int> avlTree;
+    AVL<int> t;
 
-    avlTree.root = avlTree.Insert(avlTree.root, 10);
-    avlTree.root = avlTree.Insert(avlTree.root, 20);
-    avlTree.root = avlTree.Insert(avlTree.root, 30);
-    avlTree.root = avlTree.Insert(avlTree.root, 75);
-    avlTree.root = avlTree.Insert(avlTree.root, 85);
-    avlTree.root = avlTree.Insert(avlTree.root, 95);
-    avlTree.root = avlTree.Insert(avlTree.root, 15);
+    t.root = t.Insert(t.root, 10);
+    t.root = t.Insert(t.root, 20);
+    t.root = t.Insert(t.root, 30);
+    t.root = t.Insert(t.root, 75);
+    t.root = t.Insert(t.root, 85);
+    t.root = t.Insert(t.root, 95);
+    t.root = t.Insert(t.root, 15);
 
+    cout << t.isBalanced(t.root)<<endl;
 
+    t.PrintTreeByRow(t.root);
 
+    t.root = t.DeleteNode(t.root, 30);
 
-    avlTree.PrintTreeByRow(avlTree.root);
+    cout << t.isBalanced(t.root) << endl;
+
+    cout << endl;
+
+    t.PrintTreeByRow(t.root);
 
     return 0;
 }
